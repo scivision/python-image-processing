@@ -8,12 +8,18 @@ from __future__ import division
 from numpy import log10, absolute,asarray,real
 from numpy.fft import fft2,ifft2,fftshift,fft,ifftshift
 from scipy.ndimage import imread
+from scipy.io import loadmat
 from matplotlib.pyplot import figure,show,subplots
 #from matplotlib.colors import LogNorm
-from os.path import expanduser
+from os.path import expanduser,splitext
 
-def main(fn,clip,zo,zw,minmax):
-    img = imread(fn,flatten=True)
+def main(fn,clip,zo,zw,minmax,imgvarname):
+    ext = splitext(fn)[1]
+    if ext.lower() == '.mat':
+        mat = loadmat(fn)
+        img = mat[imgvarname]
+    else:
+        img = imread(fn,flatten=True)
 
     if clip[0] is not None:
         img = img[clip[2]:clip[3],clip[0]:clip[1]]
@@ -107,9 +113,10 @@ if __name__ == '__main__':
     p = ArgumentParser('read and analyse image files')
     p.add_argument('fn',help='file to analyse',nargs='?',default=None,type=str)
     p.add_argument('-c','--clip',help='xmin xmax ymin ymax pixel coordinates to clip',nargs=4,type=int,default=(None,None,None,None))
-    p.add_argument('-z','--zero',help='center(s) of regions to zero out for interference filter',nargs='+',type=int,default=(None))
+    p.add_argument('-z','--zero',help='center(s) of regions to zero out for interference filter',nargs='+',type=int,default=[None])
     p.add_argument('-w','--zerowidth',help='horizontal (x) width to zero out from specified places',type=int,default=1)
     p.add_argument('-l','--minmax',help='min max pixel values in colormap (for plotting only)',nargs=2,type=int,default=(None,None))
+    p.add_argument('-n','--imgvarname',help='name of image variable in matlab .mat file',type=str,default=None)
     a = p.parse_args()
 
     if a.fn is None:
@@ -119,7 +126,7 @@ if __name__ == '__main__':
         fn = a.fn
 
     if fn is not None:
-        main(expanduser(fn),a.clip,a.zero,a.zerowidth,a.minmax)
+        main(expanduser(fn),a.clip,a.zero, a.zerowidth, a.minmax, a.imgvarname)
         show()
     else:
         exit('no file selected')
