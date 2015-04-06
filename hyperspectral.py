@@ -61,6 +61,7 @@ def rgba2gray(rgba):
 if __name__ == '__main__':
     """
     ./hyperspectral.py fig10.png --xc 841 1235 1623 --yc 41 442 863 --xs 50 325 --ys 50 350
+    ./hyperspectral.py fig12.png --xc 734 1081 1392 --yc 32 377 863 --xs 50 300 --ys 50 325
     """
     from argparse import ArgumentParser
     p = ArgumentParser('read and analyse hyperspectral image files')
