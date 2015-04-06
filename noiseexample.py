@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 """ Michael Hirsch
 GPLv3+
 crude example of reducing banding interference in image.
@@ -13,7 +13,8 @@ from matplotlib.pyplot import figure,show,subplots
 #from matplotlib.colors import LogNorm
 from os.path import expanduser,splitext
 
-def main(fn,clip,zo,zw,minmax,imgvarname):
+def noisefilter(fn,clip,zo,zw,minmax,imgvarname):
+    fn = expanduser(fn)
     ext = splitext(fn)[1]
     if ext.lower() == '.mat':
         mat = loadmat(fn, mat_dtype=True)
@@ -31,7 +32,7 @@ def main(fn,clip,zo,zw,minmax,imgvarname):
 
     imgfilt = real(ifft2(Ifilt)) #discards miniscule imaginary component left over
 
-    plots(img,imgfilt,Ifilt,minmax)
+    return img,imgfilt,Ifilt
 
 def zeroout(I,zo,zw):
     """crude filter for mitigating band interference"""
@@ -118,22 +119,15 @@ def plots(img,imgfilt,Ifilt,mm):
 if __name__ == '__main__':
     from argparse import ArgumentParser
     p = ArgumentParser('read and analyse image files')
-    p.add_argument('fn',help='file to analyse',nargs='?',default=None,type=str)
+    p.add_argument('fn',help='file to analyse',type=str)
     p.add_argument('-c','--clip',help='xmin xmax ymin ymax pixel coordinates to clip',nargs=4,type=int,default=(None,None,None,None))
     p.add_argument('-z','--zero',help='x,y pixel center(s) of regions to zero out for interference filter',nargs='+',type=int,default=[None])
     p.add_argument('-w','--zerowidth',help='horizontal (x) width to zero out from specified places',type=int,default=1)
     p.add_argument('-l','--minmax',help='min max pixel values in colormap (for plotting only)',nargs=2,type=int,default=(None,None))
     p.add_argument('-n','--imgvarname',help='name of image variable in matlab .mat file',type=str,default=None)
-    a = p.parse_args()
+    p = p.parse_args()
 
-    if a.fn is None:
-        from easygui import fileopenbox
-        fn = fileopenbox('pick image to analyse')
-    else:
-        fn = a.fn
-
-    if fn is not None:
-        main(expanduser(fn),a.clip,a.zero, a.zerowidth, a.minmax, a.imgvarname)
-        show()
-    else:
-        exit('no file selected')
+    img,imgfilt,Ifilt = noisefilter(p.fn, p.clip, p.zero, p.zerowidth,
+                                    p.minmax, p.imgvarname)
+    plots(img,imgfilt,Ifilt,p.minmax)
+    show()
