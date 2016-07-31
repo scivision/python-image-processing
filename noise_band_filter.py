@@ -1,21 +1,20 @@
-#!/usr/bin/env python3
-""" Michael Hirsch
-GPLv3+
+#!/usr/bin/env python
+"""
 crude example of reducing banding interference in image.
 Should not just toss in a zero to reduce sidelobes--should use a smoother taper
 """
 from __future__ import division
+from pyimagefilter import Path
 from numpy import log10, absolute,asarray,real
-from numpy.fft import fft2,ifft2,fftshift,fft,ifftshift
+from numpy.fft import fft2,ifft2,fftshift,ifftshift
 from scipy.ndimage import imread
 from scipy.io import loadmat
 from matplotlib.pyplot import figure,show,subplots
 #from matplotlib.colors import LogNorm
-from os.path import expanduser,splitext
 
 def noisefilter(fn,clip,zo,zw,minmax,imgvarname):
-    fn = expanduser(fn)
-    ext = splitext(fn)[1]
+    fn = Path(fn).expanduser()
+    ext = fn.suffix
     if ext.lower() == '.mat':
         mat = loadmat(fn, mat_dtype=True)
         img = mat[imgvarname]

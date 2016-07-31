@@ -1,4 +1,6 @@
+setuptools
+nose
 numpy
 matplotlib
 scipy
-spectral
+scikit-image

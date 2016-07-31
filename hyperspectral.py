@@ -1,12 +1,12 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
+from pyimagefilter import Path
 from scipy.ndimage import imread
 from matplotlib.pyplot import show,subplots
-from os.path import expanduser
 #from spectral import rx
 from numpy import empty,zeros_like,around,uint8
 
 def quadstack(fn,xc,yc,xs,ys):
-    fn = expanduser(fn)
+    fn = Path(fn).expanduser()
     imgr = rgba2gray(imread(fn)) #this has all four quadrants
 #%% extract four quadrants from one image, knowing a priori the system geometry performance
     """
@@ -65,17 +65,17 @@ if __name__ == '__main__':
     """
     from argparse import ArgumentParser
     p = ArgumentParser('read and analyse hyperspectral image files')
-    p.add_argument('fn',help='file to analyse',type=str)
+    p.add_argument('fn',help='file to analyse')
     p.add_argument('--xc',help='x0 x1 x-pixel coordinates to clip',nargs=3,type=int)
     p.add_argument('--yc',help='y0 y1 y-pixel coordinates to clip',nargs=3,type=int)
     p.add_argument('--xs',help='x0 x1 x-pixel coordinates to clip within each subimage (ROI)',nargs=2,type=int,default=(None,None))
     p.add_argument('--ys',help='y0 y1 x-pixel coordinates to clip within each subimage (ROI)',nargs=2,type=int,default=(None,None))
     p.add_argument('-t','--thres',help='threshold above which detection is declared',type=float,default=100)
     p.add_argument('-l','--minmax',help='min max pixel values in colormap (for plotting only)',nargs=2,type=int,default=(None,None))
-
     p = p.parse_args()
 
     img,full= quadstack(p.fn,p.xc,p.yc,p.xs,p.ys)
     imgf = imgfilt(img,p.thres)
     plots(img, imgf, p.minmax,full,p.thres)
+
     show()
