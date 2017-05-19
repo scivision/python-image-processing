@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from pyimagefilter import Path
+from pathlib import Path
 from scipy.ndimage import imread
 from matplotlib.pyplot import show,subplots
 #from spectral import rx

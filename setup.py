@@ -1,15 +1,20 @@
 #!/usr/bin/env python
-from setuptools import setup
-import subprocess
-
+req=['pathlib2','spectral','setuptools','nose','numpy','matplotlib','scipy','scikit-image']
+# %%
 try:
-    subprocess.call(['conda','install','--file','requirements.txt'])
-except Exception:
-    pass
+    import conda.cli
+    conda.cli.main('install',*req)
+except Exception as e:
+    import pip
+    pip.main(['install'] + req)
+# %%
+
+from setuptools import setup
+
 
 setup(name='pyimagefilter',
-	  description='examples of image processing in Python',
-	  url='https://github.com/scienceopen/isrutils',
-	  install_requires=['pathlib2','spectral'],
       packages=['pyimagefilter'],
+      author='Michael Hirsch, Ph.D.',
+      url='https://github.com/scivision/python-image-processing',
+	  description='examples of image processing in Python',
 	  )

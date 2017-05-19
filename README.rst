@@ -4,16 +4,16 @@ Image Processing Examples in Python
 
 2-D FFT and primitive filter example
 ====================================
+::
 
-  noiseexample.py
+    pythonnoiseexample.py
 
-designed as working example of what one might try first in the face of pattern
-interference.
+designed as working example of what one might try first in the face of pattern interference.
 
 
-Prereqs:
+Install
 --------
 ::
 
-  conda install --file requirements.txt
+    python setup.py develop
 

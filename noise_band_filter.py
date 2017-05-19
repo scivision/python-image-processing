@@ -4,7 +4,7 @@ crude example of reducing banding interference in image.
 Should not just toss in a zero to reduce sidelobes--should use a smoother taper
 """
 from __future__ import division
-from pyimagefilter import Path
+from pathlib import Path
 from numpy import log10, absolute,asarray,real
 from numpy.fft import fft2,ifft2,fftshift,ifftshift
 from scipy.ndimage import imread
