@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-req=['pathlib2','spectral','setuptools','nose','numpy','matplotlib','scipy','scikit-image']
+req=['pathlib2','spectral','nose','numpy','matplotlib','scipy','scikit-image']
 # %%
 try:
     import conda.cli
