@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 from pathlib import Path
-from scipy.ndimage import imread
+import imageio
 from matplotlib.pyplot import show,subplots
 #from spectral import rx
 from numpy import empty,zeros_like,around,uint8
 
 def quadstack(fn,xc,yc,xs,ys):
     fn = Path(fn).expanduser()
-    imgr = rgba2gray(imread(fn)) #this has all four quadrants
+    imgr = rgba2gray(imageio.imread(fn)) #this has all four quadrants
 #%% extract four quadrants from one image, knowing a priori the system geometry performance
     """
     """
