@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import numpy as np
 from skimage import color, data, restoration
 from matplotlib.pyplot import subplots, show
@@ -6,7 +6,7 @@ from scipy.signal import convolve2d
 
 img = color.rgb2gray(data.astronaut())
 psf = np.ones((5, 5)) / 25
-noisy = convolve2d(img, psf, 'same')
+noisy = convolve2d(img, psf, "same")
 noisy += 0.1 * noisy.std() * np.random.standard_normal(noisy.shape)
 deconvolved_img = restoration.wiener(noisy, psf, 1100)
 
